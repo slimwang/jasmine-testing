@@ -86,9 +86,8 @@ $(function() {
         beforeEach(function(done) {
             loadFeed(0, done);
         });
-        it('ensures when the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container', function(done) {
+        it('ensures when the loadFeed function is called and completes its work, there is at least a single .entry element within the .feed container', function() {
             expect($('.feed .entry').length).toBeGreaterThan(0);
-            done();
         });
     });
     /* Write a new test suite named "New Feed Selection" */
@@ -99,17 +98,19 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
         var beforeContent;
+        var afterContent;
         beforeEach(function(done) {
-            loadFeed(0);
-            beforeContent = $('.feed').html();
-            loadFeed(1, function() {
+            loadFeed(0, function() {
+                beforeContent = $('.feed').html();
                 done();
             });
         });
         it('ensures when a new feed is loaded by the loadFeed function that the content actually changes', function(done) {
-            var afterContent = $('.feed').html();
-            expect(afterContent).not.toBe(beforeContent);
-            done();
+            loadFeed(1, function() {
+                afterContent = $('.feed').html();
+                expect(afterContent).not.toBe(beforeContent);
+                done();
+            });
         });
     });
 }());
